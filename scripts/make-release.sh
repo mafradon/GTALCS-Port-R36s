@@ -25,6 +25,11 @@ cp -a "$SRC/GTA Liberty City Stories.sh" "$OUT/"
 cp -a "$SRC/gtalcs"                      "$OUT/"
 cp -a "$SRC/port.json" "$SRC/gameinfo.xml" "$SRC/README.md" "$OUT/"
 
+# A copy of the README travels INSIDE the port folder too: port.json ships only
+# "GTA Liberty City Stories.sh" and "gtalcs", so a README left at the release
+# root never reaches the device and the player has no controls reference there.
+cp -a "$SRC/README.md" "$OUT/gtalcs/"
+
 # conf/ is created on demand by the launcher; ship it empty so the folder exists.
 mkdir -p "$OUT/gtalcs/conf"
 rm -f "$OUT/gtalcs/conf/debug.env"          # never ship bring-up switches
