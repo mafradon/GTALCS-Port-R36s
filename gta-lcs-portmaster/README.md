@@ -13,11 +13,17 @@ time.
 
 Copy these into the port's `gtalcs/` folder:
 
+All three are **required** — setup will not run without them.
+
 | File | Size | Notes |
 |---|---|---|
 | your `*.apk` | ~51 MB | unpacked at first run, then deleted |
-| `main.*.com.rockstargames.gtalcs.obb` | ~1.9 GB | unpacked at first run, then deleted |
-| `patch.*.com.rockstargames.gtalcs.obb` | ~14 MB | optional; applied over the main data |
+| `main.17.com.rockstargames.gtalcs.obb` | ~1.9 GB | unpacked at first run, then deleted |
+| `patch.15.com.rockstargames.gtalcs.obb` | ~14 MB | applied over the main data, then deleted |
+
+The patch archive is **not an optional extra**: the main archive alone does not
+produce a correct install, so setup refuses to start without it rather than
+leaving you with a broken game.
 
 ### Free space
 
@@ -100,7 +106,6 @@ Set `conf/msaa.txt` to `0` if antialiasing causes trouble on your device.
 * An intermittent heap abort can freeze the game — the picture stays on the last
   frame and the process stops responding. Not yet fixed; it did not reproduce in
   normal play during testing.
-* Audio has not been verified by ear.
 * Save/load is untested.
 
 ## Troubleshooting

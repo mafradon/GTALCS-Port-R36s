@@ -55,6 +55,15 @@
 #define SCREEN_W 640
 #define SCREEN_H 480
 
+/* The archives the player must supply, spelled out in full so the setup screen
+ * can name exactly what is missing.  find_archive() still matches on the
+ * "main." / "patch." prefix, so a differently-versioned pair is accepted — these
+ * are the canonical names, not the matching rule.  Keep them in step with
+ * OBB_MAIN_RELPATH / OBB_PATCH_RELPATH in config.h (installer.c is deliberately
+ * standalone and does not include it). */
+#define OBB_MAIN_NAME  "main.17.com.rockstargames.gtalcs.obb"
+#define OBB_PATCH_NAME "patch.15.com.rockstargames.gtalcs.obb"
+
 /* Artwork comes out of the player's own APK — nothing copyrighted ships in
  * this package. LCS's Android download-screen background is 1024x768, i.e.
  * exactly the 4:3 of this 640x480 canvas, so unlike the CTW port's 320x180
@@ -698,7 +707,11 @@ static int welcome_screen(ui_t *ui, const char *dir,
 
 /* ------------------------------------------------------------------ main -- */
 
-static void screen_missing(ui_t *ui, const char *dir, const char *obb, const char *apk)
+/* All THREE archives are required. The patch OBB is not an optional extra: the
+ * main archive alone does not produce a correct install, so setup refuses to
+ * run without it rather than leaving the player with a broken game. */
+static void screen_missing(ui_t *ui, const char *dir, const char *obb,
+                           const char *patch, const char *apk)
 {
     char line[256];
     for (int s = 20; s > 0; s--) {
@@ -707,26 +720,31 @@ static void screen_missing(ui_t *ui, const char *dir, const char *obb, const cha
             ui_begin(ui);
             draw_panel(ui);
             draw_text_centre(ui, 158, 2, COL_ERR, "SETUP INCOMPLETE");
-            draw_text_centre(ui, 200, 1, COL_PANEL_TEXT, "Copy BOTH of these into:");
+            draw_text_centre(ui, 196, 1, COL_PANEL_TEXT, "Copy ALL THREE of these into:");
             char shown[96];
             fit_text(shown, sizeof shown, dir, 66);
-            draw_text_centre(ui, 218, 1, COL_PANEL_TEXT, shown);
+            draw_text_centre(ui, 214, 1, COL_PANEL_TEXT, shown);
 
             if (obb) { snprintf(line, sizeof line, "found   %s", base_name(obb)); }
-            else     { snprintf(line, sizeof line, "MISSING   main.*...gtalcs.obb"); }
-            draw_text_centre(ui, 252, 1, obb ? COL_OK : COL_ERR, line);
+            else     { snprintf(line, sizeof line, "MISSING   " OBB_MAIN_NAME); }
+            draw_text_centre(ui, 244, 1, obb ? COL_OK : COL_ERR, line);
+
+            if (patch) { snprintf(line, sizeof line, "found   %s", base_name(patch)); }
+            else       { snprintf(line, sizeof line, "MISSING   " OBB_PATCH_NAME); }
+            draw_text_centre(ui, 262, 1, patch ? COL_OK : COL_ERR, line);
 
             if (apk) { snprintf(line, sizeof line, "found   %s", base_name(apk)); }
             else     { snprintf(line, sizeof line, "MISSING   your .apk"); }
-            draw_text_centre(ui, 270, 1, apk ? COL_OK : COL_ERR, line);
+            draw_text_centre(ui, 280, 1, apk ? COL_OK : COL_ERR, line);
 
             snprintf(line, sizeof line, "returning to the menu in %2ds", s);
-            draw_text_centre(ui, 306, 1, COL_PANEL_TEXT, line);
+            draw_text_centre(ui, 312, 1, COL_PANEL_TEXT, line);
             ui_footer(ui);
             ui_end(ui);
         } else if (s == 20) {
-            printf("\n  SETUP INCOMPLETE — copy BOTH files into %s\n", dir);
-            printf("    %s main.*.com.rockstargames.gtalcs.obb\n", obb ? "[ok]     " : "[MISSING]");
+            printf("\n  SETUP INCOMPLETE — copy ALL THREE files into %s\n", dir);
+            printf("    %s %s\n", obb   ? "[ok]     " : "[MISSING]", OBB_MAIN_NAME);
+            printf("    %s %s\n", patch ? "[ok]     " : "[MISSING]", OBB_PATCH_NAME);
             printf("    %s your .apk\n", apk ? "[ok]     " : "[MISSING]");
             fflush(stdout);
         }
@@ -874,8 +892,12 @@ int main(int argc, char **argv)
     int  rc = 0;
     char err[512];
 
-    if (need_data && !have_main) {
-        screen_missing(&ui, dir, NULL, have_apk ? apk : NULL);
+    /* The patch archive is required, not optional — see screen_missing(). */
+    if (need_data && (!have_main || !have_patch)) {
+        screen_missing(&ui, dir,
+                       have_main  ? mobb : NULL,
+                       have_patch ? pobb : NULL,
+                       have_apk   ? apk  : NULL);
         rc = 1;
         goto done;
     }

@@ -231,10 +231,14 @@ if [ -x "$GAMEDIR/installer.armhf" ]; then
         0) ;;
         1) die "SETUP INCOMPLETE
 
-Your game files are missing. Copy your GTA: Liberty City Stories .apk and
-main.*.com.rockstargames.gtalcs.obb into:
+Your game files are missing. Setup needs ALL THREE of these in
   $GAMEDIR
-See README.md." ;;
+
+  your GTA: Liberty City Stories .apk
+  main.17.com.rockstargames.gtalcs.obb
+  patch.15.com.rockstargames.gtalcs.obb
+
+The patch archive is REQUIRED, not optional. See README.md." ;;
         *) die "SETUP FAILED while unpacking the game data.
 See gtalcs.log in $GAMEDIR for the reason." ;;
     esac

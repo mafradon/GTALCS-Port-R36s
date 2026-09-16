@@ -25,6 +25,7 @@ vsync-locked.
 Working:
 
 - World streaming, rendering, and gameplay
+- Audio
 - The engine's whole HAL frontend (Social Club, menus, legal screens)
 - Native gamepad input — the engine reads the pad itself, so no gptokeyb
 - Touch frontend driven by a virtual pointer on the stick / D-pad
@@ -36,8 +37,7 @@ anisotropic filtering, and nearest-neighbour filters upgraded to linear.
 Known issues are listed in
 [the package README](gta-lcs-portmaster/README.md#known-issues) — briefly: an
 intermittent heap abort that did not reproduce in normal play, an invalid-pointer
-abort on the way out at teardown, audio not verified by ear, and save/load
-untested.
+abort on the way out at teardown, and save/load untested.
 
 ---
 
@@ -70,11 +70,16 @@ long, and it is the most useful thing here if you are porting something similar.
 
 From your own legitimate copy of the Android game:
 
+All three are **required** — setup will not run without them.
+
 | File | Size | Notes |
 |---|---|---|
-| `*.apk` | ~51 MB | holds the engine, the `assets/` folder and the setup artwork |
-| `main.*.com.rockstargames.gtalcs.obb` | ~1.9 GB | game data |
-| `patch.*.com.rockstargames.gtalcs.obb` | ~14 MB | optional |
+| your `*.apk` | ~51 MB | holds the engine, the `assets/` folder and the setup artwork |
+| `main.17.com.rockstargames.gtalcs.obb` | ~1.9 GB | game data |
+| `patch.15.com.rockstargames.gtalcs.obb` | ~14 MB | applied over the main data |
+
+The patch archive is **not optional** — the main archive alone does not produce a
+correct install.
 
 Drop them into the port's `gtalcs/` folder on the device and launch; setup does
 the rest. About 3.9 GB free is needed during setup, ~2 GB once it is done.
