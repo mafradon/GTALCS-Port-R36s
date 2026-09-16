@@ -1,0 +1,28 @@
+{
+    "version": 2,
+    "name": "gtalcs.zip",
+    "items": [
+        "GTA Liberty City Stories.sh",
+        "gtalcs"
+    ],
+    "items_opt": null,
+    "attr": {
+        "title": "Grand Theft Auto: Liberty City Stories",
+        "desc": "Native 32-bit ARM port of the Android release of Grand Theft Auto: Liberty City Stories. The original libGTALcs.so engine runs through a custom Android-on-Linux loader providing bionic, NDK and Java-runtime behaviour on top of KMS/DRM, GLES2 and OpenAL. You must supply your own copy of the game - no content is redistributed. The gamepad is read natively by the engine, so no key mapping is used.",
+        "inst": "Copy your GTA: Liberty City Stories APK and its main.*.com.rockstargames.gtalcs.obb (plus patch.*.obb if you have it) into this port's gtalcs/ folder, then launch. First run shows a setup screen and unpacks both archives, which takes a few minutes; the archives are deleted afterwards. You need about 3.9 GB free during setup and about 2 GB once it is done. Menus are the Android touch frontend: the left stick or D-pad moves a pointer and A taps.",
+        "genres": [
+            "action",
+            "adventure"
+        ],
+        "porter": [
+            "mafradon"
+        ],
+        "image": {},
+        "rtr": true,
+        "runtime": null,
+        "reqs": [],
+        "arch": [
+            "armhf"
+        ]
+    }
+}

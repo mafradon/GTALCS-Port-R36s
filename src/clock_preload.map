@@ -1,0 +1,7 @@
+GLIBC_2.4 {
+  global: clock_gettime;
+};
+GLIBC_2.34 {
+  global: __clock_gettime64;
+  local: *;
+};

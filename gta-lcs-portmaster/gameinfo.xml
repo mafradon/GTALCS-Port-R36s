@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gameList>
+  <game>
+    <path>./GTA Liberty City Stories.sh</path>
+    <name>Grand Theft Auto: Liberty City Stories</name>
+    <desc>Native 32-bit ARM port of the Android release of GTA: Liberty City Stories, running the original engine through a custom Android-on-Linux loader. Supply your own APK and OBB; first run unpacks both and then removes them.</desc>
+    <releasedate>20051024T000000</releasedate>
+    <developer>Rockstar Leeds</developer>
+    <publisher>Rockstar Games</publisher>
+    <genre>Action / Adventure</genre>
+  </game>
+</gameList>
